@@ -10,6 +10,9 @@ def respond(connectionSocket, address):
 
     ###### Fill in Start ######
     lines = request.split("\r\n")
+    request_line = lines[0]
+    method = request_line.split()[0]
+
     for line in lines:
         print(line)
 
