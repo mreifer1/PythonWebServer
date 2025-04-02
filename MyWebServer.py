@@ -18,10 +18,12 @@ def respond(connectionSocket, address):
     if_modified_since = ''
     flag = False
     file_path = 'index.html'
+    file_size = os.path.getsize(file_path)
     modification_time = os.path.getmtime(file_path)
     last_modified = time.gmtime(modification_time)
     formatted_time = time.strftime("%a, %d %b %Y %H:%M:%S GMT", last_modified)
 
+    print("File Size (for testing): ", file_size)
     lines = request.split("\r\n")
     request_line = lines[0]
     method, Req_file_path, http_version = request_line.split()
