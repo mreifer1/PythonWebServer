@@ -41,7 +41,7 @@ def respond(connectionSocket, address):
         response = 'HTTP/1.1 501 Not Implemeneted\r\n'
         response += 'Date: ' +get_current_date() + '\r\n'
         response += 'Server: MyWebServer\r\n'
-        response += "Content-Length: 112\r\n\r\n" # this 112 value was calculated from len(response.encode()) and is accurate
+        response += "Content-Length: 0\r\n\r\n"
 
         print(f"Sending Response:\n{response}")
         connectionSocket.send(response.encode())
@@ -52,7 +52,7 @@ def respond(connectionSocket, address):
         response = 'HTTP/1.1 404 Not Found\r\n'
         response += 'Date: ' +get_current_date() + '\r\n'
         response += 'Server: MyWebServer\r\n'
-        response += "Content-Length: 105\r\n\r\n" # this 105 value was calculated from len(response.encode()) and is accurate
+        response += "Content-Length: 0\r\n\r\n"
 
         print(f"Sending Response:\n{response}")
         connectionSocket.send(response.encode())
@@ -65,7 +65,7 @@ def respond(connectionSocket, address):
         response += 'Connection: keep-alive\r\n'
         response += 'Server: MyWebServer\r\n'
         response += f'Last-Modified: {formatted_time}\r\n'
-        response += "Content-Length: 168\r\n\r\n" # this 168 value was calculated from len(response.encode()) and is accurate
+        response += "Content-Length: 0\r\n\r\n" # head request / error requests content-length = 0 
 
         print(f"Sending Response:\n{response}")
         connectionSocket.send(response.encode())
