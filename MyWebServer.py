@@ -23,7 +23,6 @@ def respond(connectionSocket, address):
     last_modified = time.gmtime(modification_time)
     formatted_time = time.strftime("%a, %d %b %Y %H:%M:%S GMT", last_modified)
 
-    print("File Size (for testing): ", file_size)
     lines = request.split("\r\n")
     request_line = lines[0]
     method, Req_file_path, http_version = request_line.split()
