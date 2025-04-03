@@ -12,6 +12,9 @@ acceptedRequests = ["GET", "HEAD"]
 def get_current_date():
     return datetime.now(timezone.utc).strftime('%a, %d %b %Y %H:%M:%S GMT')
 
+def parse_date(date_str):
+    return datetime.strptime(date_str, '%a, %d %b %Y %H:%M:%S GMT')
+
 def respond(connectionSocket, address):
     request = connectionSocket.recv(1024).decode()
 
@@ -35,7 +38,8 @@ def respond(connectionSocket, address):
 
     print("Request Method: ", method)
     print("Requested File: ", Req_file_path)
-    
+
+    file_last_modified_datetime = datetime.strptime(formatted_time, "%a, %d %b %Y %H:%M:%S GMT")
     
     if method not in acceptedRequests: # If the request is not a head or get req
 
@@ -64,7 +68,7 @@ def respond(connectionSocket, address):
         response = 'HTTP/1.1 200 OK\r\n'
         response += 'Date: ' +get_current_date() + '\r\n'
         response += 'Connection: keep-alive\r\n'
-        response += 'Server: MyWebServer\r\n'
+        response += 'Server: MyWebServer (Windows)\r\n'
         response += f'Last-Modified: {formatted_time}\r\n'
         response += "Content-Length: 0\r\n\r\n" # head request / error requests content-length = 0 
 
@@ -72,10 +76,37 @@ def respond(connectionSocket, address):
         connectionSocket.send(response.encode())
         connectionSocket.close()
         return
-    #elif method == "GET": # get req
-        
+    elif method == "GET": # get req
 
-    #return
+        if flag:
+            if_modified_datetime = parse_date(if_modified_since)
+
+            if file_last_modified_datetime <= if_modified_datetime:
+
+                response = 'HTTP/1.1 304 Not Modified\r\n'
+                response += 'Date: ' + get_current_date() + '\r\n'
+                response += 'Server: MyWebServer\r\n'
+                response += f'Content-Length: {file_size}\r\n\r\n'
+
+                print(f"Sending Response:\n{response}")
+                connectionSocket.send(response.encode())
+                connectionSocket.close()
+                return
+        
+        file = open(file_path,'rb') 
+        file_response = file.read() 
+
+        response = 'HTTP/1.1 200 OK\r\n'
+        response += 'Date: ' + get_current_date() + '\r\n'
+        response += 'Connection: keep-alive\r\n'
+        response += 'Server: MyWebServer\r\n'
+        response += f'Last-Modified: {formatted_time}\r\n'
+        response += f'Content-Length: {file_size}\r\n\r\n'
+
+        final_response = response.encode() + file_response
+        connectionSocket.send(final_response)
+        connectionSocket.close()
+        return
 
 # start the web server
 try:
