@@ -37,7 +37,7 @@ def respond(connectionSocket, address):
             break
 
     print("Request Method: ", method)
-    print("Requested File: ", Req_file_path)
+    print("Requested File: ", Req_file_path, "\n")
 
     file_last_modified_datetime = datetime.strptime(formatted_time, "%a, %d %b %Y %H:%M:%S GMT")
     
@@ -48,7 +48,7 @@ def respond(connectionSocket, address):
         response += 'Server: MyWebServer\r\n'
         response += "Content-Length: 0\r\n\r\n"
 
-        print(f"Sending Response:\n{response}")
+        print(f"Sending Response:\n\n{response}")
         connectionSocket.send(response.encode())
         connectionSocket.close()
         return 
@@ -59,7 +59,7 @@ def respond(connectionSocket, address):
         response += 'Server: MyWebServer\r\n'
         response += "Content-Length: 0\r\n\r\n"
 
-        print(f"Sending Response:\n{response}")
+        print(f"Sending Response:\n\n{response}")
         connectionSocket.send(response.encode())
         connectionSocket.close()
         return
@@ -72,7 +72,7 @@ def respond(connectionSocket, address):
         response += f'Last-Modified: {formatted_time}\r\n'
         response += "Content-Length: 0\r\n\r\n" # head request / error requests content-length = 0 
 
-        print(f"Sending Response:\n{response}")
+        print(f"Sending Response:\n\n{response}")
         connectionSocket.send(response.encode())
         connectionSocket.close()
         return
@@ -88,7 +88,7 @@ def respond(connectionSocket, address):
                 response += 'Server: MyWebServer\r\n'
                 response += f'Content-Length: {file_size}\r\n\r\n'
 
-                print(f"Sending Response:\n{response}")
+                print(f"Sending Response:\n\n{response}")
                 connectionSocket.send(response.encode())
                 connectionSocket.close()
                 return
@@ -103,7 +103,9 @@ def respond(connectionSocket, address):
         response += f'Last-Modified: {formatted_time}\r\n'
         response += f'Content-Length: {file_size}\r\n\r\n'
 
+        
         final_response = response.encode() + file_response
+        print(f"Sending Response:\n\n{final_response.decode()}")
         connectionSocket.send(final_response)
         connectionSocket.close()
         return
