@@ -86,7 +86,7 @@ def respond(connectionSocket, address):
                 response = 'HTTP/1.1 304 Not Modified\r\n'
                 response += 'Date: ' + get_current_date() + '\r\n'
                 response += 'Server: MyWebServer\r\n'
-                response += f'Content-Length: {file_size}\r\n\r\n'
+                response += f'Content-Length: 0\r\n\r\n'
 
                 print(f"Sending Response:\n\n{response}")
                 connectionSocket.send(response.encode())
